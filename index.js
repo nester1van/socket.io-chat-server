@@ -86,9 +86,14 @@ io.on('connect', (socket) => {
 
   socket.on('disconnect', () => {
     console.log(`disconnect user ${socket.id}`);
+    const userRooms = rooms.readUserRoomsByUserID(socket.id);
     rooms.deleteRoomsByUserID(socket.id);
+    userRooms.forEach(roomName => {
+      const usersInRoom = rooms.readUserIDsInRoom(roomName)
+            .map(userID => users.readUser(userID));
+      io.to(roomName).emit('users in room', {roomName, usersInRoom});
+    });
     users.deleteUser(socket.id);
-    // io.to(roomName).emit('users in room', {roomName, usersInRoom});
     console.log(users.readUsers());
   });
 });

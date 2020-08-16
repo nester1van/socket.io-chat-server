@@ -22,8 +22,12 @@ class Rooms {
     return roomsItem.map(item => item[0]);
     // return this.rooms.filter(room => room.roomName === roomName);
   }
+  readUserRoomsByUserID(userID) { 
+    return this.rooms.filter(room => (room[0] === userID))[0]; 
+  }
   // [[id1, room1, room2], [id2, room2]] 
   deleteUserFromRoom(userID, roomName) {
+    if (userID === roomName) return;
     this.rooms = this.rooms.map(idAndRooms => {
       if (idAndRooms[0] === userID) {
         return idAndRooms.filter(item => (item !== roomName));
