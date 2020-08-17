@@ -24,7 +24,6 @@ io.on('connect', (socket) => {
   users.createUser(socket.id);
   console.log(users.readUsers()); 
 
-  // methods: updateUser
   socket.on('users manager', ({ method, name }, callback) => {
     switch (method) {
       case 'updateUser':
@@ -44,8 +43,6 @@ io.on('connect', (socket) => {
       case 'userJoinRoom':
         socket.join(roomName, () => {
           let IdAndRooms = Object.keys(socket.rooms);
-          console.log('rooms', IdAndRooms); // [ <socket.id>, 'room 237' ]
-          // [ 'S594fvHwFRzwGpZHAAAC' ]
           rooms.userJoinRoom(IdAndRooms);
           const usersInRoom = rooms.readUserIDsInRoom(roomName)
             .map(userID => users.readUser(userID));
@@ -63,15 +60,13 @@ io.on('connect', (socket) => {
           .map(userID => users.readUser(userID));
         io.to(roomName).emit('users in room', {roomName, usersInRoom});
         socket.leave(roomName);
-        //callback(rooms.deleteUserFromRoom(socket.id, roomName));
-        console.log(rooms.readUserIDsInRoom(roomName));
         break;
       default: 
         callback(false);
     }
   });
 
-  socket.on('chat', ({ roomName, message }, callback) => {
+  socket.on('chat', ({ roomName, message }) => {
     const userName = users.readUser(socket.id);
     socket.to(roomName).emit('message', { userID: socket.id, userName, message });
   });

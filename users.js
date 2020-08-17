@@ -1,8 +1,3 @@
-// const users = [
-//   {id: socketID, 
-//   userName: ''}
-// ];
-
 class Users {
   constructor() {
     this.users = new Map();
