@@ -32,12 +32,13 @@ io.on('connect', (socket) => {
         break;
       case 'getUserIdAndName':
         callback(users.readUser(socket.id));
+        break;
       default:
         callback(false);
     }
   });
 
-  // methods: createRoom, readUserIDsInRoom, deleteUserFromRoom, deleteRoomsByUserID
+  // methods: createRoom, readUserIDsInRoom, deleteUserFromRoom
   socket.on('rooms manager', ({ method, roomName }, callback) => {
     switch (method) {
       case 'userJoinRoom':
@@ -64,11 +65,6 @@ io.on('connect', (socket) => {
       default: 
         callback(false);
     }
-  });
-
-  socket.on('chat', ({ roomName, message }) => {
-    const userName = users.readUser(socket.id);
-    socket.to(roomName).emit('message', { userID: socket.id, userName, message });
   });
   
   socket.on('chat message', 

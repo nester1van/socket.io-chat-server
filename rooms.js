@@ -1,6 +1,3 @@
-const { use } = require("./router");
-const e = require("express");
-
 class Rooms {
   constructor() {
     this.rooms = [];
@@ -30,9 +27,6 @@ class Rooms {
       } else {
         return idAndRooms;
       }
-    })
-    this.rooms = this.rooms.filter(room => {
-      return !(room.roomName === roomName && room.userID === userID)
     });
     return roomName;
   }
